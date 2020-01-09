@@ -1,13 +1,17 @@
 {
-  "name": "upstatement/timber-starter-theme",
-  "description": "Starter theme to build a Timber theme",
+  "name": "helpful/starter-theme",
+  "description": "Helpful starter theme to build a Timber theme",
   "type":"wordpress-theme",
   "minimum-stability" : "stable",
   "authors": [
     {
+      "email": "wpsupport@helpfuldigital.com",
+      "name": "Helpful Digital"
+    },
+    {
       "email": "jared@upstatement.com",
       "name": "jarednova"
-    }  
+    }
   ],
   "repositories": [
     {
@@ -16,9 +20,8 @@
     }
   ],
   "require": {
-	  "timber/timber": "1.*"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "5.7.16|6.*"
+	  "timber/timber": "1.*",
+    "johnbillion/extended-cpts": "^4.3",
+    "stoutlogic/acf-builder": "^1.8"
   }
 }
