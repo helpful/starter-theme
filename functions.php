@@ -1,23 +1,21 @@
 <?php
 /**
- * Timber starter-theme
- * https://github.com/timber/starter-theme
+ * Core functions
  *
  * @package  WordPress
- * @subpackage  Timber
- * @since   Timber 0.1
+ * @subpackage  Starter Theme
  */
 
 /**
- * If you are installing Timber as a Composer dependency in your theme, you'll need this block
- * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
- * plug-in, you can safely delete this block.
+ * Load vendors.
  */
-$composer_autoload = __DIR__ . '/vendor/autoload.php';
-if ( file_exists( $composer_autoload ) ) {
-	require_once $composer_autoload;
-	$timber = new Timber\Timber();
-}
+require_once get_template_directory() . '/vendor/autoload.php';
+
+/**
+ * Initialise Timber.
+ */
+$timber = new Timber\Timber();
+
 
 /**
  * This ensures that Timber is loaded and available as a PHP class.
@@ -67,25 +65,26 @@ class StarterSite extends Timber\Site {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 		parent::__construct();
 	}
-	/** This is where you can register custom post types. */
-	public function register_post_types() {
-
-	}
-	/** This is where you can register custom taxonomies. */
-	public function register_taxonomies() {
-
-	}
 
 	/** This is where you add some context
 	 *
 	 * @param string $context context['this'] Being the Twig's {{ this }}.
+	 *
+	 * @return string
 	 */
 	public function add_to_context( $context ) {
-		$context['foo']   = 'bar';
-		$context['stuff'] = 'I am a value set in your functions.php file';
-		$context['notes'] = 'These values are available everytime you call Timber::context();';
-		$context['menu']  = new Timber\Menu();
-		$context['site']  = $this;
+		$context['menu']             = new Timber\Menu( 'primary' );
+		$context['menu_footer']      = new Timber\Menu( 'footer' );
+		/*$context['sidebar']          = Timber::get_widgets( 'sidebar' );
+		$context['footer_left']      = Timber::get_widgets( 'footer_left' );
+		$context['footer_middle']    = Timber::get_widgets( 'footer_middle' );
+		$context['footer_right']     = Timber::get_widgets( 'footer_right' );*/
+		$context['site']             = $this;
+		$context['site']->login_url  = wp_login_url( get_permalink() );
+		$context['site']->logout_url = wp_logout_url( $context['site']->url );
+		$context['logged_in']        = is_user_logged_in();
+		$context['current_user']     = new Timber\User();
+
 		return $context;
 	}
 
@@ -143,25 +142,60 @@ class StarterSite extends Timber\Site {
 		add_theme_support( 'menus' );
 	}
 
-	/** This Would return 'foo bar!'.
-	 *
-	 * @param string $text being 'foo', then returned 'foo bar!'.
-	 */
-	public function myfoo( $text ) {
-		$text .= ' bar!';
-		return $text;
+	public function register_menus() {
+		register_nav_menus(
+			[
+				'primary' => 'Main',
+				'footer'  => 'Footer',
+			]
+		);
 	}
 
-	/** This is where you can add your own functions to twig.
-	 *
-	 * @param string $twig get extension.
+	/**
+	 * Enqueue scripts and styles.
 	 */
-	public function add_to_twig( $twig ) {
-		$twig->addExtension( new Twig\Extension\StringLoaderExtension() );
-		$twig->addFilter( new Twig\TwigFilter( 'myfoo', array( $this, 'myfoo' ) ) );
-		return $twig;
+	public function enqueue_scripts() {
+		// Styles.
+		wp_enqueue_style( 'starter-theme-main', get_template_directory_uri() . '/assets/css/main.css', [], filemtime( get_template_directory() . '/assets/css/main.css' ) );
+		//wp_enqueue_style( 'starter-theme-style', get_stylesheet_uri() );
+
+		// Scripts.
+		wp_enqueue_script( 'starter-theme-navigation', get_template_directory_uri() . '/assets/js/navigation.js', [ 'jquery' ], '', true );
+		wp_enqueue_script( 'starter-theme-skip-link-focus-fix', get_template_directory_uri() . '/assets/js/skip-link-focus-fix.js', [ 'jquery' ], '', true );
+		wp_enqueue_script( 'starter-theme-validation', get_template_directory_uri() . '/assets/js/validation.js', [ 'jquery' ], '', true );
+		wp_enqueue_script( 'starter-theme-imagesloaded', get_template_directory_uri() . '/assets/js/imagesloaded.js', [ 'jquery' ], '', true );
+
+		wp_enqueue_script( 'starter-theme-main', get_template_directory_uri() . '/assets/js/main.js', [ 'jquery' ], filemtime( get_template_directory() . '/assets/js/main.js' ), true );
+
 	}
 
 }
-
 new StarterSite();
+
+
+
+
+/**
+ * Custom Post types and Taxonomies.
+ */
+require_once 'inc/post-types-taxonomies.php';
+
+/**
+ * Custom fields.
+ */
+require_once 'inc/custom-fields.php';
+
+/**
+ * Forms.
+ */
+require_once 'inc/forms.php';
+
+/**
+ * User roles.
+ */
+require_once 'inc/user-roles.php';
+
+/**
+ * Post type archive filtering.
+ */
+require_once 'inc/archive-filters.php';
