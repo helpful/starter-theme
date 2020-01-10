@@ -15,25 +15,13 @@
 				</div>
 			</section>
 
-			<!-- comment box -->
-			<section class="comment-box">
-				<!-- comments -->
-				<div class="comments">
-				    {% if post.comments %}
-					<h3> comments </h3>
-					{% for cmt in post.comments %}
-					    {% include "comment.twig" with {comment:cmt} %}
-					{% endfor %}
-				    {% endif %}
-				</div>
-
-				{% if post.comment_status == "closed" %}
-					<p> comments for this post are closed </p>
-				{% else %}
-				    <!-- comment form -->
-				    {% include "comment-form.twig" %}
+			<!-- Comments -->
+			<section id="post-comments" class="comment-box">
+				{% if post.comments | length or 'open' == post.comment_status %}
+					{{ function('comments_template') }}
 				{% endif %}
 			</section>
+
 		</article>
 	</div><!-- /content-wrapper -->
 {% endblock %}
