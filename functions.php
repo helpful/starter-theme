@@ -199,3 +199,8 @@ require_once 'inc/user-roles.php';
  * Post type archive filtering.
  */
 require_once 'inc/archive-filters.php';
+
+/**
+ * Functions for use in templates.
+ */
+require_once 'inc/template-functions.php';
