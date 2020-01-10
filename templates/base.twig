@@ -21,19 +21,31 @@
 			{% endblock %}
 		</header>
 
-		<section id="content" role="main" class="content-wrapper">
-			{% if title %}<h1>{{title}}</h1>{% endif %}
-			<div class="wrapper {{sidebar_class}}">
+		<main id="content" role="main" class="content-wrapper">
+			<nav class="" typeof="BreadcrumbList" vocab="https://schema.org/">
+				<div class="">
+					{% if (fn('bcn_display')) %}
+						{{ fn('bcn_display') }}
+					{% endif %}
+				</div>
+			</nav>
+
+			{% if title %}
+				<h1>{{title}}</h1>
+			{% endif %}
+
+			<div class="wrapper">
 				{% block content %}
 					Sorry, no content
 				{% endblock %}
 			</div>
+
 			{% if sidebar %}
 				<aside class="layout-sidebar">
 					{{sidebar}}
 				</aside>
 			{% endif %}
-		</section>
+		</main>
 
 		{% block footer %}
 			<footer id="footer">
