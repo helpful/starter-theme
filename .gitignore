@@ -1,3 +1,47 @@
-*.DS_Store
-*.DS_Store?
+# Ignore all files starting with .
+.*
 ._*
+
+# Do NOT ignore .gitignore
+!.gitignore
+
+# Do NOT ignore .gitattributes
+!.gitattributes
+
+# Do NOT ignore .editorconfig
+!.editorconfig
+
+# Do NOT ignore .readme.md
+!readme.md
+
+# Do NOT ignore .jscsrc
+!.jscsrc
+
+# Do NOT ignore .jshintignore
+!.jshintignore
+
+# Ignore all files that start with ~
+~*
+
+# Ignore packaged files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Ignore OS generated files
+ehthumbs.db
+Thumbs.db
+
+# Ignore log files and databases
+*.log
+
+# Build Tools
+node_modules
+npm-debug.log
+config.codekit3
+.idea
