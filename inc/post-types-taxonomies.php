@@ -12,6 +12,11 @@
  */
 
 /**
+ * Add Excerpts to Pages.
+ */
+add_post_type_support( 'page', 'excerpt' );
+
+/**
  * Register post types and taxonomies.
  */
 /*add_action( 'init', function () {
